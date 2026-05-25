@@ -37,3 +37,38 @@ body {
 a {
   color: var(--accent);
 }
+
+/* Footnote markers (※) — keep them subtle and clickable */
+.footnote-marker {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Desktop sidenotes: float each note into the right margin near its marker.
+   Hidden below the breakpoint, where footnotes collapse to the footer. */
+.sidenote {
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .sidenote {
+    display: block;
+    float: right;
+    clear: right;
+    width: 15rem;
+    margin-right: -17rem;
+    margin-top: 0.15rem;
+    margin-bottom: 1.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-footnote);
+    line-height: var(--text-footnote-leading);
+    color: var(--accent);
+  }
+
+  .sidenote img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0.5rem 0;
+  }
+}
