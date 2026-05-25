@@ -18,20 +18,30 @@ A personal portfolio website with a blog, hosted on Vercel and managed via Sanit
 2. **Styling:** Tailwind CSS.
 3. **Portfolio content:** hand-coded React pages at launch, but the rendering layer (Portable Text components, image handling, links) is built generically so a future `project` Sanity schema can reuse it without rewrites.
 
-## Content model (Sanity)
+## Content model (Sanity) — as built
 
 ```
 post (document)
-├── title, slug, publishedAt, coverImage, excerpt
-├── body            → Portable Text
-│   ├── blocks: headings, paragraphs
-│   ├── inline image (png/gif)
-│   ├── external link (mark)
-│   └── footnoteRef (custom mark → footnote _key)
-└── footnotes[]      → array of:
-    ├── _key, number/label
-    └── content      → Portable Text (text, images, links)
+├── title, slug, publishedAt, excerpt, coverImage
+└── body            → blockContent (Portable Text)
+    ├── blocks: normal, h2, h3, blockquote, bullet/numbered lists
+    ├── inlineImage (png/gif, alt + caption)
+    └── marks:
+        ├── link (external: href + open-in-new-tab)
+        └── footnote (inline) → footnoteContent
+                                 ├── text + link marks
+                                 └── inlineImage (png/gif)
 ```
+
+**Footnote design decision:** footnotes are authored *inline* as a Portable Text
+annotation that carries its own rich content (text, images/GIFs, links), rather
+than as a separate `footnotes[]` array referenced by key. Rationale: no fragile
+number/key syncing between body and footnote list, automatic numbering at render
+(by order of appearance), and reliable marker↔note navigation. The "side-footnote
+module" remains a *rendering* distinction (Phase 3/4 extracts inline footnotes
+into the margin/footer) — the reader still sees two modules. Trade-off: footnote
+content is edited in the annotation dialog rather than a top-level array item;
+revisit if that editing surface feels cramped for image-heavy notes.
 
 Every new essay = a new `post` document in Studio. No code changes required.
 

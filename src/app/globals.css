@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palette */
+  --background: #f0f0f0; /* off-white */
+  --foreground: #222121; /* off-black */
+  --accent: #6c875f; /* green — links & footnotes */
+
+  /* Typefaces. 'Feature Text' is used if installed locally; falls back to
+     editorial system serifs. Swap in licensed font files later. */
+  --font-serif: "Feature Text", Georgia, "Times New Roman", Times, serif;
+  --font-sans: Arial, Helvetica, sans-serif;
+
+  /* Type scale — body is intentionally large; footnotes notably smaller */
+  --text-body: 1.3125rem; /* 21px */
+  --text-body-leading: 1.7;
+  --text-footnote: 0.875rem; /* 14px */
+  --text-footnote-leading: 1.5;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-accent: var(--accent);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  line-height: var(--text-body-leading);
+}
+
+a {
+  color: var(--accent);
 }
