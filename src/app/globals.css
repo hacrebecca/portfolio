@@ -16,6 +16,11 @@
   --text-body-leading: 1.7;
   --text-footnote: 0.875rem; /* 14px */
   --text-footnote-leading: 1.5;
+
+  /* Layout modules */
+  --sidebar-w: 15rem; /* fixed left nav rail */
+  --notes-w: 16rem; /* right footnotes column */
+  --rule: rgba(34, 33, 33, 0.18); /* module outline lines */
 }
 
 @theme inline {
@@ -44,21 +49,32 @@ a {
   cursor: pointer;
 }
 
-/* Desktop sidenotes: float each note into the right margin near its marker.
-   Hidden below the breakpoint, where footnotes collapse to the footer. */
+/* Essay body. On wide screens it reserves a right gutter (the FOOTNOTES
+   column) and draws the divider rule; sidenotes float into that gutter,
+   aligned to their reference. Below the breakpoint, notes drop to the footer. */
+.essay {
+  padding: 2rem 1.5rem;
+}
+
 .sidenote {
   display: none;
 }
 
 @media (min-width: 1280px) {
+  .essay {
+    position: relative;
+    padding-right: calc(var(--notes-w) + 2rem);
+    border-right: 1px solid var(--rule);
+  }
+
   .sidenote {
     display: block;
     float: right;
     clear: right;
-    width: 15rem;
-    margin-right: -17rem;
+    width: var(--notes-w);
+    margin-right: calc(-1 * (var(--notes-w) + 2rem));
     margin-top: 0.15rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     font-family: var(--font-sans);
     font-size: var(--text-footnote);
     line-height: var(--text-footnote-leading);

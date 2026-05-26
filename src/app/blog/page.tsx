@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { SanityImage } from "@/components/SanityImage";
 import { sanityFetch } from "@/sanity/lib/live";
 import { postsQuery, type PostListItem } from "@/sanity/queries";
 
@@ -20,6 +21,11 @@ export default async function BlogIndex() {
           {posts.map((post) => (
             <li key={post._id}>
               <Link href={`/blog/${post.slug}`} className="block group">
+                {post.coverImage ? (
+                  <div className="mb-3 overflow-hidden">
+                    <SanityImage value={post.coverImage} maxWidth={900} />
+                  </div>
+                ) : null}
                 <h2 className="font-serif text-3xl group-hover:text-accent transition-colors">
                   {post.title}
                 </h2>

@@ -15,9 +15,6 @@ type FootnoteMark = { _key: string; content?: PortableTextBlock[] };
 
 type FootnoteEntry = { key: string; number: number; content: PortableTextBlock[] };
 
-// Walk the body in document order and assign each inline footnote a number.
-// The number drives jump-links and screen-reader labels even though the
-// visible marker is the symbol.
 function extractFootnotes(body: PortableTextBlock[]): {
   ordered: FootnoteEntry[];
   numberByKey: Record<string, number>;
@@ -62,8 +59,7 @@ function ExternalLink({
   );
 }
 
-// Footnote content rendered in the desktop margin. Uses inline-safe elements
-// (spans, bare imgs) because it lives inside a body paragraph.
+// Inline-safe components for footnote content shown in the desktop margin.
 const sidenoteComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <span className="block mb-2">{children}</span>,
@@ -78,7 +74,7 @@ const sidenoteComponents: PortableTextComponents = {
   },
 };
 
-// Footnote content rendered in the mobile/footer list (block context is fine).
+// Block components for footnote content in the mobile/footer list.
 const footnoteContentComponents: PortableTextComponents = {
   marks: { link: ExternalLink },
   types: {
@@ -131,6 +127,7 @@ export function PortableBody({ body }: { body: PortableTextBlock[] }) {
                 {MARKER}
               </a>
             </sup>
+            {/* Reference-aligned sidenote (desktop margin) */}
             <span className="sidenote" aria-hidden="true">
               <span className="text-accent mr-1">{MARKER}</span>
               <PortableText
@@ -151,10 +148,10 @@ export function PortableBody({ body }: { body: PortableTextBlock[] }) {
     <>
       <PortableText value={body} components={components} />
 
-      {/* Footer footnotes — shown when the margin isn't wide enough for sidenotes */}
+      {/* Footer footnotes — shown when the margin isn't wide enough */}
       {ordered.length > 0 ? (
         <section
-          className="mt-16 pt-8 border-t border-foreground/20 font-sans xl:hidden"
+          className="mt-16 pt-8 border-t border-[var(--rule)] font-sans xl:hidden"
           style={{
             fontSize: "var(--text-footnote)",
             lineHeight: "var(--text-footnote-leading)",
